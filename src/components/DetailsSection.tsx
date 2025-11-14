@@ -48,7 +48,7 @@ const DetailsSection = () => {
             backgroundPosition: "center"
           }}>
               <h2 className="text-2xl sm:text-3xl font-display text-white font-bold">
-                The details
+                Platform Details
               </h2>
             </div>
             
@@ -58,7 +58,7 @@ const DetailsSection = () => {
             border: "1px solid #ECECEC"
           }}>
               <h3 className="text-lg sm:text-xl font-display mb-6 sm:mb-8">
-                Precision engineering meets adaptive intelligence
+                Smart technology meets proven learning science
               </h3>
 
               <div className="space-y-4 sm:space-y-6">
@@ -70,7 +70,7 @@ const DetailsSection = () => {
                   </div>
                   <div className="flex-1">
                     <div className="p-3 rounded-lg bg-gray-50/80 backdrop-blur-sm border border-gray-100">
-                      <span className="font-semibold text-base">Height:</span> 5'8"
+                      <span className="font-semibold text-base">Lesson Length:</span> 30-60 seconds
                     </div>
                   </div>
                 </div>
@@ -83,7 +83,7 @@ const DetailsSection = () => {
                   </div>
                   <div className="flex-1">
                     <div className="p-3 rounded-lg bg-gray-50/80 backdrop-blur-sm border border-gray-100">
-                      <span className="font-semibold text-base">Capacity:</span> 55lbs
+                      <span className="font-semibold text-base">Topics:</span> 1000+ subjects
                     </div>
                   </div>
                 </div>
@@ -96,7 +96,7 @@ const DetailsSection = () => {
                   </div>
                   <div className="flex-1">
                     <div className="p-3 rounded-lg bg-gray-50/80 backdrop-blur-sm border border-gray-100">
-                      <span className="font-semibold text-base">Weight:</span> 140lbs
+                      <span className="font-semibold text-base">Platform:</span> Web & Mobile
                     </div>
                   </div>
                 </div>
@@ -109,7 +109,7 @@ const DetailsSection = () => {
                   </div>
                   <div className="flex-1">
                     <div className="p-3 rounded-lg bg-gray-50/80 backdrop-blur-sm border border-gray-100">
-                      <span className="font-semibold text-base">Uptime:</span> 6hr
+                      <span className="font-semibold text-base">Learning Speed:</span> 3x faster retention
                     </div>
                   </div>
                 </div>
@@ -122,7 +122,7 @@ const DetailsSection = () => {
                   </div>
                   <div className="flex-1">
                     <div className="p-3 rounded-lg bg-gray-50/80 backdrop-blur-sm border border-gray-100">
-                      <span className="font-semibold text-base">Movement:</span> 1.5M/S
+                      <span className="font-semibold text-base">Daily Usage:</span> 5-10 minutes
                     </div>
                   </div>
                 </div>
@@ -139,10 +139,10 @@ const DetailsSection = () => {
             backgroundPosition: "center"
           }}>
               <div className="inline-block px-4 sm:px-6 py-2 border border-white text-white rounded-full text-xs mb-4">
-                Request a demo
+                Get Started
               </div>
               <h2 className="text-2xl sm:text-3xl font-display text-white font-bold mt-auto">
-                See it for yourself
+                Start Learning Free
               </h2>
             </div>
             
@@ -182,7 +182,7 @@ const DetailsSection = () => {
                     name="company" 
                     value={formData.company} 
                     onChange={handleChange} 
-                    placeholder="Company (optional)" 
+                    placeholder="Learning goal (optional)" 
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent" 
                   />
                 </div>
@@ -192,7 +192,7 @@ const DetailsSection = () => {
                     type="submit" 
                     className="w-full px-6 py-3 bg-pulse-500 hover:bg-pulse-600 text-white font-medium rounded-full transition-colors duration-300"
                   >
-                    Request access
+                    Get Started Free
                   </button>
                 </div>
               </form>

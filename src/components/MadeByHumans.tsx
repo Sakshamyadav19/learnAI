@@ -10,9 +10,8 @@ const MadeByHumans = () => {
           backgroundImage: "url('/background-section3.png')"
         }}>
             <div className="flex items-center text-white">
-              <img src="/logo.svg" alt="Pulse Robot Logo" className="h-5 sm:h-6 w-auto mr-3 invert" />
-              <span className="text-white text-xl font-medium">
-            </span>
+              <img src="/logo.svg" alt="Learn.AI Logo" className="h-5 sm:h-6 w-auto mr-3 invert" />
+              <span className="text-white text-xl font-medium">Learn.AI</span>
             </div>
             
             <div style={{
@@ -24,7 +23,7 @@ const MadeByHumans = () => {
               marginBottom: "-30px",
               padding: "0px 0px 100px"
             }} className="sm:text-5xl font-playfair text-white italic mt-0 mx-0 font-thin text-6xl md:text-7xl py-0 px-0 text-center lg:text-7xl">
-                Made By AI & Human
+                Powered By AI, Built for Humans
               </h2>
             </div>
             

@@ -1,5 +1,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
+import adaptiveLearning from "@/assets/adaptive-learning.jpg";
+import microLessons from "@/assets/micro-lessons.jpg";
+import progressResults from "@/assets/progress-results.jpg";
 
 const HumanoidSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -117,14 +120,15 @@ const HumanoidSection = () => {
               }}
             >
               <div
-                className="absolute inset-0 z-0 bg-gradient-to-b from-pulse-900/40 to-dark-900/80"
+                className="absolute inset-0 z-0"
                 style={{
-                  backgroundImage: "url('/background-section1.png')",
+                  backgroundImage: `url(${adaptiveLearning})`,
                   backgroundSize: "cover",
-                  backgroundPosition: "top center",
-                  backgroundBlendMode: "overlay"
+                  backgroundPosition: "center"
                 }}
-              ></div>
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/50 to-dark-900/90"></div>
+              </div>
               
               <div className="absolute top-4 right-4 z-20">
                 <div className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white">
@@ -153,14 +157,15 @@ const HumanoidSection = () => {
               }}
             >
               <div
-                className="absolute inset-0 z-0 bg-gradient-to-b from-pulse-900/40 to-dark-900/80"
+                className="absolute inset-0 z-0"
                 style={{
-                  backgroundImage: "url('/background-section2.png')",
+                  backgroundImage: `url(${microLessons})`,
                   backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundBlendMode: "overlay"
+                  backgroundPosition: "center"
                 }}
-              ></div>
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-900/50 to-dark-900/90"></div>
+              </div>
               
               <div className="absolute top-4 right-4 z-20">
                 <div className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white">
@@ -189,14 +194,15 @@ const HumanoidSection = () => {
               }}
             >
               <div
-                className="absolute inset-0 z-0 bg-gradient-to-b from-pulse-900/40 to-dark-900/80"
+                className="absolute inset-0 z-0"
                 style={{
-                  backgroundImage: "url('/background-section3.png')",
+                  backgroundImage: `url(${progressResults})`,
                   backgroundSize: "cover",
-                  backgroundPosition: "bottom center",
-                  backgroundBlendMode: "overlay"
+                  backgroundPosition: "center"
                 }}
-              ></div>
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/50 to-dark-900/90"></div>
+              </div>
               
               <div className="absolute top-4 right-4 z-20">
                 <div className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white">

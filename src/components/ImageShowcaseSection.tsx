@@ -1,5 +1,6 @@
 
 import React from "react";
+import learningShowcase from "@/assets/learning-showcase.jpg";
 
 const ImageShowcaseSection = () => {
   return (
@@ -16,10 +17,10 @@ const ImageShowcaseSection = () => {
         </div>
         
         <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-elegant mx-auto max-w-4xl animate-on-scroll">
-          <div className="w-full">
+          <div className="w-full bg-gradient-to-br from-purple-900 to-blue-900">
             <img 
-              src="/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png" 
-              alt="Learn.AI adaptive learning platform interface" 
+              src={learningShowcase} 
+              alt="Person learning with AI-powered holographic interface" 
               className="w-full h-auto object-cover"
             />
           </div>

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.pyc
+.env
+venv/
+env/
+.venv
+*.log
+.DS_Store
+
+# Debug files
+temp_response.json
+test_audio/
+*.wav
+

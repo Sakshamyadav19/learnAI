@@ -34,6 +34,12 @@ npm i
 
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
+
+# Step 5 (Optional): Set up and run the backend API server
+cd backend
+pip install -r requirements.txt
+# Create .env file with API credentials (see backend/README.md)
+uvicorn main:app --reload --port 8000
 ```
 
 **Edit a file directly in GitHub**
@@ -54,11 +60,61 @@ npm run dev
 
 This project is built with .
 
+**Frontend:**
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+
+**Backend:**
+- FastAPI (Python)
+- Uvicorn (ASGI server)
+- httpx (HTTP client)
+
+## Backend Setup
+
+This project includes a FastAPI backend for handling lesson generation API calls.
+
+1. **Navigate to backend directory:**
+   ```sh
+   cd backend
+   ```
+
+2. **Install Python dependencies:**
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+3. **Create `.env` file** (already created with default values, or create new):
+   ```env
+   AIRIA_API_KEY=your_api_key
+   AIRIA_API_URL=https://api.airia.ai/v2/PipelineExecution/...
+   AIRIA_USER_ID=your_user_id
+   BACKEND_PORT=8000
+   ```
+
+4. **Run the backend server:**
+   ```sh
+   uvicorn main:app --reload --port 8000
+   ```
+
+For detailed backend setup instructions, see [backend/README.md](backend/README.md).
+
+## Development Workflow
+
+1. Start the backend server (port 8000):
+   ```sh
+   cd backend
+   uvicorn main:app --reload --port 8000
+   ```
+
+2. Start the frontend dev server (port 8080) in a separate terminal:
+   ```sh
+   npm run dev
+   ```
+
+3. Frontend will call `http://localhost:8000/generateLesson` for lesson generation
 
 ## How can I deploy this project?
 

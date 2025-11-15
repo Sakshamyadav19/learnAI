@@ -1,11 +1,16 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { isAuthenticated, clearAuth } from "@/lib/auth";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +20,18 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    setAuthenticated(isAuthenticated());
+  }, [location.pathname]);
+
+  const handleLogout = () => {
+    clearAuth();
+    setAuthenticated(false);
+    setIsMenuOpen(false);
+    document.body.style.overflow = "";
+    navigate("/");
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,36 +62,39 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a 
-          href="#" 
+        <Link 
+          to="/"
           className="flex items-center space-x-2"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToTop();
-          }}
+          onClick={scrollToTop}
           aria-label="Learn.AI"
         >
-          <img 
-            src="/logo.svg" 
-            alt="Learn.AI Logo" 
-            className="h-7 sm:h-8" 
-          />
-        </a>
+          <span className="h-7 sm:h-8 text-xl sm:text-2xl font-bold text-gray-900 flex items-center">
+            Learn.AI
+          </span>
+        </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
-          <a 
-            href="#" 
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link 
+            to="/"
             className="nav-link"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToTop();
-            }}
+            onClick={scrollToTop}
           >
             Home
-          </a>
+          </Link>
           <a href="#features" className="nav-link">About</a>
           <a href="#details" className="nav-link">Contact</a>
+          {authenticated && (
+            <button
+              onClick={handleLogout}
+              className="nav-link"
+              style={{
+                color: '#FE5C02',
+              }}
+            >
+              Logout
+            </button>
+          )}
         </nav>
 
         {/* Mobile menu button - increased touch target */}
@@ -93,18 +113,17 @@ const Navbar = () => {
         isMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
       )}>
         <nav className="flex flex-col space-y-8 items-center mt-8">
-          <a 
-            href="#" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
-            onClick={(e) => {
-              e.preventDefault();
+          <Link 
+            to="/"
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
+            onClick={() => {
               scrollToTop();
               setIsMenuOpen(false);
               document.body.style.overflow = '';
             }}
           >
             Home
-          </a>
+          </Link>
           <a 
             href="#features" 
             className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
@@ -125,6 +144,17 @@ const Navbar = () => {
           >
             Contact
           </a>
+          {authenticated && (
+            <button
+              onClick={handleLogout}
+              className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100"
+              style={{
+                color: '#FE5C02',
+              }}
+            >
+              Logout
+            </button>
+          )}
         </nav>
       </div>
     </header>

@@ -185,3 +185,44 @@ export async function getChunks(
   }
 }
 
+/**
+ * Query Fastino AI for personalized context
+ * @param user_id - Fastino user ID
+ * @param question - Question to ask Fastino
+ * @param use_cache - Whether to use cached results (default: false)
+ * @returns Answer string from Fastino, null on failure
+ */
+export async function queryFastino(
+  user_id: string,
+  question: string,
+  use_cache: boolean = false
+): Promise<string | null> {
+  const url = `${BACKEND_URL}/fastino/query`;
+  
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id,
+        question,
+        use_cache,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+      console.warn("⚠️  Fastino query failed:", errorData);
+      return null;
+    }
+
+    const data = await response.json();
+    return data.answer || null;
+  } catch (error) {
+    console.warn("⚠️  Fastino query error:", error);
+    return null;
+  }
+}
+

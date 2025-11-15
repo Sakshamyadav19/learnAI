@@ -64,7 +64,7 @@ async def register_user(email: str, name: str, age: int, tone: str) -> Optional[
     logger.info(f"🔑 x-api-key header: {FASTINO_API_KEY[:20]}...{FASTINO_API_KEY[-10:] if len(FASTINO_API_KEY) > 30 else '***'}")
     
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
+        async with httpx.AsyncClient(timeout=100.0) as client:
             response = await client.post(url, headers=headers, json=payload)
             
             if response.is_success:

@@ -6,7 +6,7 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 
 export interface QuizQuestion {
   id: number;
@@ -27,9 +27,11 @@ interface QuizPanelProps {
   questions: QuizQuestion[];
   onSubmit: (quizData: QuizSubmissionData[]) => void;
   onClose: () => void;
+  summary?: string | null;
+  isLoadingSummary?: boolean;
 }
 
-const QuizPanel = ({ lesson, questions, onSubmit, onClose }: QuizPanelProps) => {
+const QuizPanel = ({ lesson, questions, onSubmit, onClose, summary, isLoadingSummary = false }: QuizPanelProps) => {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
@@ -167,6 +169,30 @@ const QuizPanel = ({ lesson, questions, onSubmit, onClose }: QuizPanelProps) => 
           >
             Close Quiz
           </Button>
+          
+          {/* Quiz Performance Summary */}
+          {isLoadingSummary && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Weak Points & Focus Areas
+              </h3>
+              <div className="flex items-center justify-center py-4">
+                <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+                <span className="ml-3 text-sm text-gray-600">Loading your personalized feedback...</span>
+              </div>
+            </div>
+          )}
+          
+          {!isLoadingSummary && summary && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Weak Points & Focus Areas
+              </h3>
+              <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                {summary}
+              </p>
+            </div>
+          )}
         </div>
       )}
     </div>

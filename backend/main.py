@@ -58,12 +58,12 @@ AIRIA_USER_ID = os.getenv("AIRIA_USER_ID")
 # Request/Response models
 class GenerateLessonRequest(BaseModel):
     userInput: str
-    user_id: Optional[str] = None  # Fastino user ID for chunks retrieval
+    user_id: Optional[str] = None  # Fastino user ID for query retrieval
 
 
 class GenerateQuizRequest(BaseModel):
     userInput: str  # User lesson prompt
-    user_id: Optional[str] = None  # Fastino user ID for chunks retrieval
+    user_id: Optional[str] = None  # Fastino user ID for query retrieval
 
 
 class QuizQuestionOption(BaseModel):
@@ -243,9 +243,50 @@ async def fastino_ingest_quiz(request: IngestQuizRequest):
         return IngestDataResponse(success=False, message=f"Internal server error: {str(e)}")
 
 
-class ConversationMessage(BaseModel):
-    role: str  # "system", "user", or "assistant"
-    content: str
+class QueryFastinoRequest(BaseModel):
+    user_id: str
+    question: str
+    use_cache: bool = False
+
+
+class QueryFastinoResponse(BaseModel):
+    answer: str
+
+
+@app.post("/fastino/query", response_model=QueryFastinoResponse)
+async def fastino_query(request: QueryFastinoRequest):
+    """
+    Query Fastino AI for personalized context
+    
+    Args:
+        request: QueryFastinoRequest with user_id, question, and optional use_cache
+        
+    Returns:
+        QueryFastinoResponse with answer
+    """
+    logger.info(f"🔍 Querying Fastino for user: {request.user_id}")
+    logger.info(f"📝 Question: {request.question[:100]}...")
+    
+    try:
+        answer = await query_fastino(request.user_id, request.question, request.use_cache)
+        
+        if answer:
+            logger.info(f"✅ Successfully retrieved answer from Fastino")
+            return QueryFastinoResponse(answer=answer)
+        else:
+            logger.warning(f"⚠️  Fastino query returned no answer for user {request.user_id}")
+            return JSONResponse(
+                status_code=500,
+                content={"error": "Failed to get answer from Fastino"},
+                headers={"Access-Control-Allow-Origin": "*"}
+            )
+    except Exception as e:
+        logger.error(f"❌ Error during Fastino query: {e}", exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Internal server error: {str(e)}"},
+            headers={"Access-Control-Allow-Origin": "*"}
+        )
 
 
 
@@ -288,24 +329,20 @@ async def generate_lesson(request: GenerateLessonRequest):
     if request.user_id:
         logger.info(f"🔍 Querying Fastino for user context for lesson generation for user: {request.user_id}")
         
-        # Create a question that helps Fastino understand what context we need about the topic
+        # Create a question to get user's knowledge level, background, education, and experience for the topic
         # Note: Do not put userInput in quotes as Fastino cannot read it properly
-        question = (
-            f"What past learning experiences, quiz results, and key observations are related to {request.userInput}? "
-            f"Please provide insights about what the user has learned, struggled with, and any patterns "
-            f"in their learning performance related to this topic that would help personalize the lesson."
-        )
+        question = f"answer in 4-5 lines : What is the knowledge level of the user. Tell about his background, education and experience for the topic {request.userInput}"
         
         try:
             answer = await query_fastino(request.user_id, question, use_cache=False)
             
             if answer:
                 logger.info(f"✅ Retrieved answer from Fastino for lesson generation")
-                logger.info(f"📝 Fastino answer: {answer[:300]}...")
+                logger.info(f"📝 Fastino answer (first 500 chars): {answer[:500]}...")
                 
-                # Enhance prompt with Fastino context
-                enhanced_prompt = f"{request.userInput}\n\nRelevant past learning context:\n{answer}"
-                logger.info(f"📝 Enhanced prompt with Fastino context")
+                # Enhance prompt with Fastino user context (knowledge level, background, education, experience)
+                enhanced_prompt = f"{request.userInput}\n\nUser Context:\n{answer}"
+                logger.info(f"📝 Enhanced prompt with Fastino user context (knowledge level, background, education, experience)")
             else:
                 logger.info("ℹ️  No answer retrieved from Fastino, using original prompt")
         except Exception as e:
@@ -322,7 +359,7 @@ async def generate_lesson(request: GenerateLessonRequest):
             headers={"Access-Control-Allow-Origin": "*"}
         )
     
-    # Prepare payload for Airia.ai API (use enhanced prompt with chunks)
+    # Prepare payload for Airia.ai API (use enhanced prompt with user context from Fastino)
     payload = {
         "userId": AIRIA_USER_ID,
         "userInput": enhanced_prompt,

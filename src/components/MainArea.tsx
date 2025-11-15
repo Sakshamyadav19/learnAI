@@ -5,7 +5,7 @@ import LessonInput from "./LessonInput";
 import TakeQuizButton from "./TakeQuizButton";
 import QuizPanel, { QuizSubmissionData, QuizQuestion } from "./QuizPanel";
 import { getFastinoUserId } from "@/lib/auth";
-import { ingestQuiz } from "@/lib/fastino";
+import { ingestQuiz, queryFastino } from "@/lib/fastino";
 import { generateQuiz } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -26,6 +26,8 @@ const MainArea = ({
   const [currentNarration, setCurrentNarration] = useState<string | null>(null);
   const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [quizSummary, setQuizSummary] = useState<string | null>(null);
+  const [isLoadingSummary, setIsLoadingSummary] = useState(false);
 
   const handleQuizSubmit = async (quizData: QuizSubmissionData[]) => {
     console.log("Quiz submission data:", quizData);
@@ -51,6 +53,27 @@ const MainArea = ({
         }
       }
       
+      // Query Fastino for quiz performance summary
+      setIsLoadingSummary(true);
+      setQuizSummary(null); // Clear previous summary
+      try {
+        const question = `In 2-3 lines tell me about the weak points and the topics to focus on from the previous quizes related to ${topic}.`;
+        const summary = await queryFastino(user_id, question, false);
+        
+        if (summary) {
+          // Store summary to display in QuizPanel
+          setQuizSummary(summary);
+        } else {
+          console.warn("⚠️  Could not retrieve quiz performance summary from Fastino");
+          setQuizSummary(null);
+        }
+      } catch (error) {
+        console.warn("⚠️  Error querying Fastino for quiz summary:", error);
+        setQuizSummary(null);
+      } finally {
+        setIsLoadingSummary(false);
+      }
+      
       // Show warning if any ingestion failed (non-blocking)
       const failedCount = quizData.filter((_, index) => {
         // We can't easily track which ones failed, so just show a general warning if needed
@@ -66,6 +89,8 @@ const MainArea = ({
   const handleCloseQuiz = () => {
     setShowQuiz(false);
     setQuizQuestions([]);
+    setQuizSummary(null);
+    setIsLoadingSummary(false);
   };
 
   const handleTakeQuiz = async () => {
@@ -126,6 +151,8 @@ const MainArea = ({
               questions={quizQuestions}
               onSubmit={handleQuizSubmit}
               onClose={handleCloseQuiz}
+              summary={quizSummary}
+              isLoadingSummary={isLoadingSummary}
             />
           )
         )}
